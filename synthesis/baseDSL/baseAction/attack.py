@@ -6,14 +6,15 @@ from synthesis.ai.interpreter import Interpreter
 from rts.units import Unit
 from rts import GameState
 from rts import Player
+from synthesis.baseDSL.util.factory import Factory
 
 
 class Attack(ChildC,Node):
     
-    def __init__(self) -> None:
-        self._op =None
+   
         
-    def __init__(self,op :OpponentPolicy) -> None:
+    def __init__(self,op :OpponentPolicy=None) -> None:
+        self._used = False
         self._op =op 
         
     
@@ -34,15 +35,35 @@ class Attack(ChildC,Node):
     
     def interpret(self,gs : GameState, player:int, u : Unit, automata :Interpreter) -> None:
         p = gs.getPlayer(player)
-        if not u.getType().canAttack:
+        if (not u.getType().canAttack) or u.getPlayer() != player :
             return 
 	    
-        if   u.getPlayer() == player  and automata._core.getAbstractAction(u)==None :
+        if  automata._memory._freeUnit[u.getID()] :
            
             target = self._op.getUnit(gs, p, u, automata)
-         
+            self._used = True
             automata._core.attack(u, target)
+            automata._memory._freeUnit[u.getID()] = False
          
 	
-   
+    def load(self, l : list[str], f : Factory):
+        s = l.pop(0)
+        self._op =  f.build_OpponentPolicy(s)
+	
+
+
+
+    def save(self,l : list[str])->None:
+        l.append("Attack")
+        l.append(self._op.getValue())
+
+
+
+    def clone(self, f : Factory) -> Node:
+        return f.build_Attack(self._op.clone(f))
+    
+    def resert(self, f : Factory) -> None:
+        self._used = False
         
+    def clear(self,father:Node, f : Factory) -> Node:
+        return self._used

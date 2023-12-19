@@ -1,0 +1,2 @@
+2023-07-21 21:53:52,468: [Main] Starting trainer for model vae_microRTS
+2023-07-21 21:53:52,471: [Main] device cpu

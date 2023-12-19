@@ -4,20 +4,19 @@ from synthesis.ai.interpreter import Interpreter
 from rts.units import Unit
 from rts import GameState
 from rts import Player
+from synthesis.baseDSL.util.factory import Factory
 
 
 
 class OpponentPolicy(AlmostTerminal):
     
-    def __init__(self) -> None:
-        self._op = None
-        
-    def __init__(self,op) -> None:
+
+    def __init__(self,op= None) -> None:
         self._op = op
     
     
     def rules(self):#->list[str]:
-        return ["Strongest"
+        return ["Strongest",
 		        "Weakest",
 		        "Closest",
 		        "Farthest",
@@ -37,6 +36,9 @@ class OpponentPolicy(AlmostTerminal):
     def translate(self)->str:
         return self._op
     
+    
+    def clone(self, f: Factory):
+        return f.build_OpponentPolicy(self.getValue())
     
     def  getUnit(self, gs :GameState, p: Player, u:Unit, automata :Interpreter )-> Unit:
 		

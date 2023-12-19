@@ -2,19 +2,23 @@
 import random
 
 from synthesis.baseDSL.almostTerminal.n import N
+from synthesis.baseDSL.baseMain.node import Node
 
 
 
 class N_E1(N):
     
-    def __init__(self):
-        super.__init__()
-        
-        
-    def __init__(self,n) -> None:
-        super.__init__(n)
+    
+    def __init__(self,n=None) -> None:
+        self._n = n
         
     def sample(self)->None:
         rules = self.rules()
-        r = random.randint(len(rules))
+        r = random.randint(0,len(rules) - 1)
         self._n = rules[r]
+        
+    def countNode(self,l : list[Node]):
+        l.append(self)
+        
+    def mutation(self,bugdet):
+        self.sample()

@@ -11,26 +11,24 @@ from rts import Player
 
 from rts import UnitAction
 import java
+from synthesis.baseDSL.util.factory import Factory
 
 
 class Build(ChildC,Node):
     
-    def __init__(self) -> None:
-        self._type =None
-        self._n = None
-        self._direc = None
         
-    def __init__(self,utype : Utype, n : N, direc : Direction) -> None:
+    def __init__(self,utype : Utype= None, n : N= None, direc : Direction= None) -> None:
         self._type =utype
         self._n = n
         self._direc = direc
+        self._used = False
         
     
     def translate(self) -> str:
         return "u.build("+self._type.getValue()+","+self._direc.getValue()+","+self._n.getValue()+")"
     
     def translate2(self) -> str:
-        return "u.build(|"+self._type+"|"+self._direc.getValue()+"|"+self._n.getValue()+"|)"
+        return "u.build(|"+self._type.getValue()+"|"+self._direc.getValue()+"|"+self._n.getValue()+"|)"
     
     def  translateIndentation(self,n_tab:int) ->str:
         tabs = ""
@@ -45,17 +43,19 @@ class Build(ChildC,Node):
         p = gs.getPlayer(player)
         uType = automata._utt.getUnitType(self._type.getValue())
         
-        if not (uType.name == "Barracks" or uType.name == "Base" or \
-                automata._core.getAbstractAction(u)!=None):
+        if not automata._memory._freeUnit[u.getID()] :
+            return
+         
+        if not (uType.name == "Barracks" or uType.name == "Base" ):
             return
         
         if u.getPlayer() != player or \
                     u.getType().name != "Worker" or \
-                    automata.resource < uType.cost or \
-                    automata.countConstrution(uType.name,player,gs) >= int(self._n.getValue())   :
+                    automata.resource < uType.cost    :
             return
         
-        
+        if automata.countConstrution(uType.name,player,gs) >= int(self._n.getValue()):
+            return 
         
         reservedPositions =  java.util.LinkedList()
 	
@@ -67,11 +67,40 @@ class Build(ChildC,Node):
         elif direction==UnitAction.DIRECTION_RIGHT: automata._core.build(u,uType,u.getX()+1,u.getY())
         
         else: automata._core.buildIfNotAlreadyBuilding(u,uType,u.getX(),u.getY(),reservedPositions,p,pgs)
-    
         
+        self._used= True
         automata.resource -= uType.cost
+        automata._memory._freeUnit[u.getID()] = False
+        
+        
+        
+    def load(self, l : list[str], f : Factory):
+        s = l.pop(0)
+        self._type = f.build_Utype(s)
+        s1 = l.pop(0)
+        self._direc =  f.build_Direction(s1)
+        s2 = l.pop(0)
+        self._n = f.build_N(s2)
+
+
+
+
+
+    def save(self,l : list[str]) -> None:
+        l.append("Build")
+        l.append(self. _type.getValue())
+        l.append(self._direc.getValue())
+        l.append(self._n.getValue())
+	
             
         
-	
+    def clone(self, f : Factory) -> Node:
+        return f.build_Build(self._type.clone(f), self._direc.clone(f), self._n.clone(f))
+    
+    def resert(self, f : Factory) -> None:
+        self._used = False
+        
+    def clear(self,father:Node, f : Factory) -> Node:
+        return self._used
    
         

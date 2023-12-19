@@ -1,3 +1,9 @@
+from __future__  import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from synthesis.baseDSL.util.factory import Factory
+
+
 from synthesis.baseDSL.baseMain.S import S, ChildS
 from synthesis.baseDSL.baseMain.node import Node
 
@@ -5,13 +11,14 @@ from rts import PhysicalGameState
 from synthesis.ai.interpreter import Interpreter
 from rts.units import Unit
 from rts import GameState
+from synthesis.baseDSL.util.control import Control
+
 
 class For_S(ChildS,Node):
     
-    def __init__(self):
-        self._s = S()
+   
         
-    def __init__(self, s : S):
+    def __init__(self, s : S=S()):
         self._s = s
         
     def translate(self) -> str:
@@ -37,4 +44,35 @@ class For_S(ChildS,Node):
                 self._s.interpret(gs, player,u2, automata)
    
    
+    def load(self,l:list[str], f: Factory) -> None:
+       
+        s = l.pop(0)
+        n = Control.aux_load(s, f)
+        n.load(l, f)
+        self._s =  n
+		
+
+    def save(self,l : list[str]) -> None:
+        l.append("For_S")
+        self._s.save(l)
+        
+    def clone(self, f : Factory) -> Node:
+        return f.build_For_S(self._s.clone(f))
+    
+    def resert(self, f : Factory) -> None:
+        if self._s == None: self._s.resert(f)
+        
+    def clear(self,father:Node, f : Factory) -> Node:
+        
+        if isinstance(self._s._childS, For_S):
+            self._s = self._s._childS
+		
+        childwasuse = self._s.clear(self,f)
+        if not childwasuse:				
+			
+            father.childS= f.build_Empty()
+            return False
+
+        return True
+	
    

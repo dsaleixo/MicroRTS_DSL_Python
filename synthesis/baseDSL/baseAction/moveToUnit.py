@@ -7,18 +7,17 @@ from synthesis.ai.interpreter import Interpreter
 from rts.units import Unit
 from rts import GameState
 from rts import Player
+from synthesis.baseDSL.util.factory import Factory
 
 
 
 class MoveToUnit(ChildC,Node):
     
-    def __init__(self) -> None:
-        self._op =None
-        self._tp = None
-        
-    def __init__(self,op :OpponentPolicy, tp :TargetPlayer) -> None:
+   
+    def __init__(self,op :OpponentPolicy=OpponentPolicy(), tp :TargetPlayer=TargetPlayer()) -> None:
         self._op =op 
         self._tp = tp
+        self._used = False
         
     
     def translate(self) -> str:
@@ -43,15 +42,38 @@ class MoveToUnit(ChildC,Node):
         pgs = gs.getPhysicalGameState() 
 		
         if u.getType().canMove and u.getPlayer()==player and \
-                            automata._core.getAbstractAction(u)==None :
+                            automata._memory._freeUnit[u.getID()] :
             u2 = self._op.getUnit(gs, p, u, automata)
             if u2!=None :
                 pf =  automata._core.pf   
                 move = pf.findPathToPositionInRange2(u, u2.getX() + u2.getY() * pgs.getWidth(),1, gs )
                 if move!=None:
                     automata._core.move(u, move.m_a, move.m_b)
+                    self._used = True
+                    automata._memory._freeUnit[u.getID()] = False
 			
          
 	
-   
+    def load(self, l : list[str], f :Factory):
+        s = l.pop(0)
+        self._tp= f.build_TargetPlayer(s)
+        s1 = l.pop(0)
+        self._op = f.build_OpponentPolicy(s1)
+
+
+
+
+    def save(self, l : list[str]):
+        l.append("MoveToUnit")
+        l.append(self._tp.getValue())
+        l.append(self._op.getValue())
+        
+    def clone(self, f : Factory) -> Node:
+        return f.build_MoveToUnit(self._tp.clone(f), self._op.clone(f))
+    
+    def resert(self, f : Factory) -> None:
+        self._used = False
+        
+    def clear(self,father:Node, f : Factory) -> Node:
+        return self._used
         

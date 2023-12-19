@@ -1,5 +1,7 @@
 from __future__  import annotations
 from typing import TYPE_CHECKING
+
+from synthesis.ai.memory import Memory
 if TYPE_CHECKING:
     from synthesis.baseDSL.baseMain.node import Node
 
@@ -44,6 +46,7 @@ class Interpreter:
     def getAction(self, player:int,  gs:GameState) -> PlayerAction:
         self.resource = gs.getPlayer(player).getResources()
         self._core.clear()
+        self._memory = Memory(gs,self)
         self._n.interpret(gs, player,None, self)
         return self._core.translateActions(player, gs)
         
@@ -51,7 +54,7 @@ class Interpreter:
         
         
         
-    def  farthestAllyBase( pgs: PhysicalGameState, player, int,  unitAlly : Unit) ->Unit :
+    def  farthestAllyBase(self, pgs: PhysicalGameState, player: int,  unitAlly : Unit) ->Unit :
 
         farthestBase = None
         farthesttDistance = 0

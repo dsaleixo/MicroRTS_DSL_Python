@@ -14,14 +14,15 @@ from rts.units import UnitTypeTable
 from synthesis.ai.interpreter import Interpreter
 
 
-
-ai = Interpreter(UnitTypeTable(2))
+ai = LightRush(UnitTypeTable(2))
+#ai = Interpreter(UnitTypeTable(2))
 #ai0 = WorkerRush()
 ai1 = LightRush(UnitTypeTable(2))
 
 
 from playout.simpleMatch import SimpleMatch
-win = SimpleMatch.playout("maps/24x24/basesWorkers24x24A.xml",ai1,ai,7000,True)
+sm = SimpleMatch()
+win = sm.playout("maps/24x24/basesWorkers24x24A.xml",ai1,ai,7000,True)
 print("win =",win)
 
 

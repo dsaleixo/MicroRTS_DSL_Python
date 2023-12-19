@@ -1,0 +1,9 @@
+2023-08-31 14:11:26,901: [id_conf] 00000
+2023-08-31 14:11:54,071: [search] actual	2.3506455421447754	2.3506455421447754	2	0.5	e
+actual	11.892102241516113	9.062163591384888	4	0.5	e u.moveToUnit(Enemy,MostHealthy) u.build(Heavy,Right,10) u.build(Heavy,EnemyDir,1) u.build(Heavy,Up,50)
+actual	17.501105070114136	5.6090028285980225	5	0.5	u.idle() u.idle() e
+actual	23.369061946868896	5.867956876754761	6	0.5	e u.moveAway()
+actual	23.799980640411377	0.43091869354248047	7	1.0	u.build(Base,Down,10) u.attack(MostHealthy) e
+actual2	1.0
+Camp	27.170420169830322	7	u.idle() u.attack(Closest)
+

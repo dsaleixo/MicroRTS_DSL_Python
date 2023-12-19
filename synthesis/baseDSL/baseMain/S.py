@@ -1,9 +1,20 @@
+from __future__  import annotations
+
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    
+    from synthesis.baseDSL.util.factory import Factory
+    from synthesis.ai.interpreter import Interpreter
+    
+    
 from abc import ABC, abstractmethod
 
 from synthesis.baseDSL.baseMain.node import Node
 from synthesis.baseDSL.baseMain.noTerminal import NoTerminal
-from synthesis.baseDSL.util.factory import Factory
-from synthesis.ai.interpreter import Interpreter
+from synthesis.baseDSL.util.control import Control
+
+
 from rts.units import Unit
 from rts import GameState
 
@@ -14,10 +25,9 @@ class ChildS(Node,ABC):
 
 class S(Node,NoTerminal):
 
-    def __init__(self):
-        self._childS = None
+    
         
-    def __init__(self, childS : ChildS):
+    def __init__(self, childS : ChildS = None):
         self._childS = childS
         
    
@@ -57,4 +67,24 @@ class S(Node,NoTerminal):
                 f.build_C()]
         
     
+    def load(self, l: list[str], f : Factory) -> None:
+        s = l.pop(0)
+        n = Control.aux_load(s, f)
+        n.load(l, f)
+        self._childS = n
+
+
+    def save(self,l : list[str]):
+        l.append("S")
+        self._childS.save(l)
+	
+ 
+    def clone(self, f : Factory) -> Node:
+        if self._childS == None: return f.build_S()
+        return f.build_S(self._childS.clone(f))
     
+    def resert(self, f : Factory) -> None:
+        if self._childS == None: self._childS.resert(f)
+        
+    def clear(self,father:Node, f : Factory) -> Node:
+        return self._childS.clear(self, f)

@@ -1,0 +1,8 @@
+2023-09-11 12:18:50,600: [id_conf] 0_1_2_0_0
+2023-09-11 12:18:57,976: [search] actual	0.6706304550170898	0.6706304550170898	2	1.0	u.attack(LessHealthy) u.attack(LessHealthy) u.moveToUnit(Closest,Enemy) u.train(Heavy,EnemyDir,0) u.attack(MostHealthy) u.moveToUnit(Strongest,Enemy) u.build(Light,Right,1) u.idle() u.build(Light,Left,4) u.moveToUnit(Weakest,Enemy)
+actual	2.256232261657715	0.8146660327911377	4	1.0	u.attack(LessHealthy) u.attack(LessHealthy) u.moveToUnit(Closest,Enemy) u.train(Worker,EnemyDir,0) u.attack(Weakest) u.moveToUnit(MostHealthy,Enemy) u.build(Light,Right,1) u.idle() u.attack(MostHealthy) u.build(Light,Left,10) u.attack(Weakest) u.moveToUnit(MostHealthy,Enemy)
+actual	3.027278423309326	0.7398693561553955	5	1.0	u.attack(LessHealthy) u.attack(LessHealthy) u.moveToUnit(Closest,Enemy) u.train(Light,EnemyDir,0) u.attack(LessHealthy) u.moveToUnit(Strongest,Ally) u.build(Light,Right,1) u.attack(MostHealthy) u.idle() u.build(Light,Left,4) u.moveToUnit(Weakest,Enemy)
+actual	3.8514020442962646	0.7931578159332275	6	1.0	u.attack(LessHealthy) u.moveToUnit(LessHealthy,Enemy) u.attack(Closest) u.train(Worker,EnemyDir,0) u.moveToUnit(Strongest,Enemy) u.attack(MostHealthy) u.build(Light,Left,1) u.idle() u.build(Light,Right,4) u.moveToUnit(Weakest,Enemy)
+actual	4.607002258300781	0.7264127731323242	7	1.0	u.attack(LessHealthy) u.attack(LessHealthy) u.moveToUnit(LessHealthy,Enemy) u.train(Worker,EnemyDir,0) u.attack(Strongest) u.build(Light,Right,1) u.moveToUnit(MostHealthy,Enemy) u.attack(Closest) u.idle() u.build(Light,Left,4) u.moveToUnit(Weakest,Enemy)
+Camp	7.35832953453064	7	e
+

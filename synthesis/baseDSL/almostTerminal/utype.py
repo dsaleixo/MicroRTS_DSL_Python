@@ -4,15 +4,14 @@ from synthesis.ai.interpreter import Interpreter
 from rts.units import Unit
 from rts import GameState
 from rts import Player
+from synthesis.baseDSL.util.factory import Factory
 
 
 
 class Utype(AlmostTerminal):
     
-    def __init__(self) -> None:
-        self._type = None
-        
-    def __init__(self,utype) -> None:
+   
+    def __init__(self,utype=None) -> None:
         self._type = utype
     
     
@@ -34,3 +33,6 @@ class Utype(AlmostTerminal):
 	
     def translate(self)->str:
         return self._type
+    
+    def clone(self, f: Factory):
+        return f.build_Utype(self.getValue())

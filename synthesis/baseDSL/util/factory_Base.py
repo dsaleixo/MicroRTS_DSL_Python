@@ -1,113 +1,115 @@
 from __future__  import annotations
-from tkinter import N
+from queue import Empty
+
 
 from typing import TYPE_CHECKING
+from synthesis.baseDSL.baseMain.S_S import S_S
 
 from synthesis.baseDSL.util.factory import Factory
-if TYPE_CHECKING:
-    from synthesis.baseDSL.almostTerminal.direction import Direction
-    from synthesis.baseDSL.almostTerminal.targetPlayer import TargetPlayer
-    from synthesis.baseDSL.almostTerminal.utype import Utype
-    from synthesis.baseDSL.baseAction.build import Build
-    from synthesis.baseDSL.baseAction.harvest import Harvest
 
-    from synthesis.baseDSL.baseAction.idle import Idle
-    from synthesis.baseDSL.baseAction.moveAway import MoveAway
-    from synthesis.baseDSL.baseAction.moveToUnit import MoveToUnit
-    from synthesis.baseDSL.baseAction.train import Train
+from synthesis.baseDSL.almostTerminal.direction import Direction
+from synthesis.baseDSL.almostTerminal.targetPlayer import TargetPlayer
+from synthesis.baseDSL.almostTerminal.utype import Utype
+from synthesis.baseDSL.almostTerminal.n import N
+from synthesis.baseDSL.baseAction.build import Build
+from synthesis.baseDSL.baseAction.harvest import Harvest
 
-    from synthesis.baseDSL.almostTerminal.opponentPolicy import OpponentPolicy
-    from synthesis.baseDSL.baseAction.attack import Attack
-    from synthesis.baseDSL.baseMain.S import S, ChildS
-    from synthesis.baseDSL.baseMain.for_S import For_S
-    from synthesis.baseDSL.baseMain.C import C, ChildC
+from synthesis.baseDSL.baseAction.idle import Idle
+from synthesis.baseDSL.baseAction.moveAway import MoveAway
+from synthesis.baseDSL.baseAction.moveToUnit import MoveToUnit
+from synthesis.baseDSL.baseAction.train import Train
+
+from synthesis.baseDSL.almostTerminal.opponentPolicy import OpponentPolicy
+from synthesis.baseDSL.baseAction.attack import Attack
+from synthesis.baseDSL.baseMain.S import S, ChildS
+from synthesis.baseDSL.baseMain.for_S import For_S
+from synthesis.baseDSL.baseMain.C import C, ChildC
 
 from abc import ABC, abstractmethod
 
 class Factory_Base(Factory):
+        
+    def build_S(self,childS : ChildS = None) -> S:
+        if childS == None: return S()
+        else: return S(childS)
+
+ 
+    def build_For_S(self,s : S = None) -> For_S:
+        if s == None: return For_S()
+        else: return For_S(s)
     
-    def build_S() -> S:
-        return S()
-    def build_S(childS : ChildS) -> S:
-        return S(childS)
-    
-    def build_for_S() -> For_S:
-        return For_S()
-    def build_for_S(s : S) -> For_S:
-        return For_S(s)
-    
-    def build_C() -> C:
-        return C()
-    def build_C(childC : ChildC) -> C:
-        return C(childC)
+    def build_C(self,childC : ChildC= None) -> C:
+        if childC == None: return C()
+        else: return C(childC)
     
    
-    
+    def build_S_S(self,sL: S=None, sR: S=None) -> S_S:
+        if sL == None: return S_S()
+        else: return S_S(sL,sR)
     
     
     
     #actions
-    def build_Attack() -> Attack:
-        return Attack()
-    def build_Attack(op : OpponentPolicy) -> Attack:
-        return Attack(op)
+    def build_Attack(self,op : OpponentPolicy=None) -> Attack:
+        if op == None: return Attack()
+        else: return Attack(op)
     
-    def build_Idle() -> Idle:
+    def build_Idle(self) -> Idle:
         return Idle()
     
-    def build_Build() -> Build:
-        return Build()
+    def build_Empty(self) -> Empty:
+        return Empty()
     
-    def build_Build(utype : Utype, direc:Direction, n: N) -> Build:
-        return Build(utype,n, direc)
+    def build_Build(self,utype : Utype=None, direc:Direction=None, n: N=None) -> Build:
+        if utype == None: return Build()
+        else: return Build(utype,n, direc)
     	
-    def build_Harvest() -> Harvest:
-        return Harvest()
+
+    def build_Harvest(self,n : N=None) -> Harvest:
+        if n == None: return Harvest()
+        else: return Harvest(n)
     
-    def build_Harvest(n : N) -> Harvest:
-        return Harvest(n)
-    
-    def build_MoveAway() -> MoveAway:
+    def build_MoveAway(self) -> MoveAway:
         return MoveAway()
 
-    def build_MoveToUnit() -> MoveToUnit:
-        return MoveAway()
 
-    def build_MoveToUnit(tp:TargetPlayer, op:OpponentPolicy) -> MoveToUnit:
-        return MoveToUnit(tp, op)
+
+    def build_MoveToUnit(self,tp:TargetPlayer=None, op:OpponentPolicy=None) -> MoveToUnit:
+        if tp == None: return MoveToUnit()
+        else: return MoveToUnit(tp, op)
 	
-    def build_Train() -> Train:
-        return Train()
-
-    def build_Train( utype : Utype,  direc : Direction,  n : N) -> Train:
-        return Train(utype,n,direc)
+ 
+ 
+    def build_Train(self, utype : Utype=None,  direc : Direction=None,  n : N=None) -> Train:
+        if utype == None: return Train()
+        else: return Train(utype,n,direc)
 
 
 	# AlmostTerminal
     
-    def build_Utype() -> Utype:
-        return Utype()
-    def build_Utype(value : str) -> Utype:
+   
+    def build_Utype(self,value : str=None) -> Utype:
+        if value == None: return
         return Utype(value)
     
-    def build_N() -> N:
-        return N()
-    def build_N(value : str) -> N:
+    
+    def build_N(self,value : str=None) -> N:
+        if value == None: return
         return N(value)
         
-    def build_Direction() -> Direction:
-        return Direction()
-    def build_Direction(value : str) -> Direction:
+   
+    def build_Direction(self,value : str=None) -> Direction:
+        if value == None: return Direction()
         return Direction(value)
 
 
-    def build_TargetPlayer() -> TargetPlayer:
-        return TargetPlayer()
-    def build_TargetPlayer(value : str) -> TargetPlayer:
+    
+    def build_TargetPlayer(self,value : str=None) -> TargetPlayer:
+        if value == None: return TargetPlayer()
         return TargetPlayer(value)
     
-    def build_OpponentPolicy() -> OpponentPolicy:
-        return OpponentPolicy()
-    def build_OpponentPolicy(value : str) -> OpponentPolicy:
+    
+    def build_OpponentPolicy(self,value : str=None) -> OpponentPolicy:
+        if value == None: return OpponentPolicy()
         return OpponentPolicy(value)
     

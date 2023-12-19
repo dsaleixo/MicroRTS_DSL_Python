@@ -11,16 +11,17 @@ from rts import Player
 
 from rts import UnitAction
 import java
+from synthesis.baseDSL.util.factory import Factory
 
 
 class Harvest(ChildC,Node):
     
-    def __init__(self) -> None:
-        self._n = None
+ 
        
         
-    def __init__(self, n : N) -> None:
+    def __init__(self, n : N=None) -> None:
         self._n = n
+        self._used = False
         
         
     
@@ -44,7 +45,7 @@ class Harvest(ChildC,Node):
         p = gs.getPlayer(player)
 		
         if  (not u.getType().canHarvest) or \
-                    u.getPlayer() != player or automata._core.getAbstractAction(u)!=None:
+                    u.getPlayer() != player or  not automata._memory._freeUnit[u.getID()] :
             return
 		
         if automata.countHarvester(player,gs) >= int(self._n.getValue()):
@@ -69,5 +70,26 @@ class Harvest(ChildC,Node):
                     closestDistance = d
             
         if closestResource != None and closestBase != None:
-             automata._core.harvest(u, closestResource, closestBase)
+            self._used = True
+            automata._core.harvest(u, closestResource, closestBase)
+            automata._memory._freeUnit[u.getID()] = False
         
+        
+    def load(self,l : list[str], f : Factory)->None:
+        s = l.pop(0)
+        self._n =  f.build_N(s)
+
+
+    def save(self,l : list[str]) -> None:
+        l.append("Harvest")
+        l.append(self._n.getValue())
+		
+  
+    def clone(self, f : Factory) -> Node:
+        return f.build_Harvest( self._n.clone(f))
+    
+    def resert(self, f : Factory) -> None:
+        self._used = False
+        
+    def clear(self,father:Node, f : Factory) -> Node:
+        return self._used

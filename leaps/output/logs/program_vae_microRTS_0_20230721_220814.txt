@@ -1,0 +1,15 @@
+2023-07-21 22:08:14,997: [Main] Starting trainer for model vae_microRTS
+2023-07-21 22:08:14,997: [Main] device cpu
+2023-07-21 22:08:20,194: [Trainer] Training epoch 1.
+2023-07-21 22:08:34,595: [TrainerResult] {'mean_total_loss': 1.7727003892262776, 'mean_progs_loss': 1.77043620745341, 'mean_latent_loss': 0.022641874228914578, 'mean_progs_t_accuracy': 0.35696839292844135, 'mean_progs_s_accuracy': 0.0}
+2023-07-21 22:08:34,597: [Test] Validation epoch 1.
+2023-07-21 22:08:36,242: [ValidationResult] {'mean_total_loss': 1.7203024625778198, 'mean_progs_loss': 1.7181518077850342, 'mean_latent_loss': 0.02150617726147175, 'mean_progs_t_accuracy': 0.3624531030654907, 'mean_progs_s_accuracy': 0.0}
+2023-07-21 22:08:36,381: [Trainer] Training epoch 2.
+2023-07-21 22:08:43,783: [TrainerResult] {'mean_total_loss': 1.7250912189483643, 'mean_progs_loss': 1.7228889465332031, 'mean_latent_loss': 0.022022684415181477, 'mean_progs_t_accuracy': 0.3608745336532593, 'mean_progs_s_accuracy': 0.0}
+2023-07-21 22:08:43,785: [Test] Validation epoch 2.
+2023-07-21 22:08:45,059: [ValidationResult] {'mean_total_loss': 1.7077757120132446, 'mean_progs_loss': 1.7053946256637573, 'mean_latent_loss': 0.02381131425499916, 'mean_progs_t_accuracy': 0.3622276484966278, 'mean_progs_s_accuracy': 0.0}
+2023-07-21 22:08:45,066: [Trainer] Training epoch 3.
+2023-07-21 22:08:52,165: [TrainerResult] {'mean_total_loss': 1.7048803567886353, 'mean_progs_loss': 1.702324112256368, 'mean_latent_loss': 0.025562588746349018, 'mean_progs_t_accuracy': 0.3592819273471832, 'mean_progs_s_accuracy': 0.0}
+2023-07-21 22:08:52,166: [Test] Validation epoch 3.
+2023-07-21 22:08:53,519: [ValidationResult] {'mean_total_loss': 1.6874853372573853, 'mean_progs_loss': 1.6845265626907349, 'mean_latent_loss': 0.029587743803858757, 'mean_progs_t_accuracy': 0.3568517863750458, 'mean_progs_s_accuracy': 0.0}
+2023-07-21 22:08:53,525: [Trainer] Training epoch 4.

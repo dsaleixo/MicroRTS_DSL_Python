@@ -1,7 +1,18 @@
+from __future__  import annotations
+
+
+from typing import TYPE_CHECKING
+
+
+
+if TYPE_CHECKING:
+    from synthesis.baseDSL.baseMain.node import Node
+    from synthesis.baseDSL.util.factory import Factory
+
+
 
 from abc import ABC, abstractmethod
-from synthesis.baseDSL.baseMain.node import Node
-from synthesis.baseDSL.util.factory import Factory
+
 
 class NoTerminal(ABC):
     

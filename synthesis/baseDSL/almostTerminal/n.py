@@ -4,15 +4,15 @@ from synthesis.ai.interpreter import Interpreter
 from rts.units import Unit
 from rts import GameState
 from rts import Player
+from synthesis.baseDSL.util.factory import Factory
 
 
 
 class N(AlmostTerminal):
     
-    def __init__(self) -> None:
-        self._n = None
+   
         
-    def __init__(self,n) -> None:
+    def __init__(self,n= None) -> None:
         self._n = n
     
     
@@ -44,3 +44,6 @@ class N(AlmostTerminal):
 	
     def translate(self)->str:
         return self._n
+    
+    def clone(self, f: Factory):
+        return f.build_N(self.getValue())

@@ -7,15 +7,14 @@ from rts.units import Unit
 from rts import GameState
 from rts import UnitAction
 from rts import PhysicalGameState
+from synthesis.baseDSL.util.factory import Factory
 
 
 
 class Direction(AlmostTerminal):
     
-    def __init__(self) -> None:
-        self._direc = None
-        
-    def __init__(self,direc) -> None:
+   
+    def __init__(self,direc= None) -> None:
         self._direc = direc
     
     
@@ -42,10 +41,17 @@ class Direction(AlmostTerminal):
     def converte(self,gs : GameState, player:int, u : Unit) -> int :
         x = u.getX()
         y = u.getY()
-        if self._direc == "Right" and gs.free(x+1,y):return UnitAction.DIRECTION_RIGHT
-        if self._direc == "Left" and gs.free(x-1,y):return UnitAction.DIRECTION_LEFT
-        if self._direc == "Up" and gs.free(x,y-1):return UnitAction.DIRECTION_UP
-        if self._direc == "Down" and gs.free(x,y+1):return UnitAction.DIRECTION_DOWN
+        pgs = gs.getPhysicalGameState()
+        height = pgs.getHeight() - 1
+        width = pgs.getWidth() - 1
+        if self._direc == "Right" and (x+1) +(y)*width< height*width and (x+1) +(y)*width>= 0:
+            if gs.free(x+1,y):return UnitAction.DIRECTION_RIGHT
+        if self._direc == "Left" and  (x-1) +(y)*width< height*width and (x-1) +(y)*width>= 0:
+            if gs.free(x-1,y):return UnitAction.DIRECTION_LEFT
+        if self._direc == "Up" and (x) +(y-1)*width< height*width and (x) +(y-1)*width>= 0:
+            if gs.free(x,y-1):return UnitAction.DIRECTION_UP
+        if self._direc == "Down" and  (x) +(y+1)*width< height*width and (x) +(y+1)*width>= 0:
+            if gs.free(x,y+1):return UnitAction.DIRECTION_DOWN
         
         if self._direc == "EnemyDir" :
             pgs = gs.getPhysicalGameState()
@@ -94,3 +100,5 @@ class Direction(AlmostTerminal):
                     first = False
         return distance
 	    
+    def clone(self, f: Factory):
+        return f.build_Direction(self.getValue())
